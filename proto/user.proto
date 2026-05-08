@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+// package này dùng trong Go import path
+package user;
+option go_package = "grpc-demo/pb";
+
+// ── Message definitions ──────────────────────────────
+
+message CreateUserRequest {
+  string name  = 1;
+  string email = 2;
+  int32  age   = 3;
+}
+
+message CreateUserResponse {
+  string id    = 1;
+  string name  = 2;
+  string email = 3;
+}
+
+message GetUserRequest {
+  string id = 1;
+}
+
+message UserListRequest {
+  int32 limit =1;
+}
+
+// ── Service definition ───────────────────────────────
+
+service UserService {
+  // Unary: tạo user
+  rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);
+
+  // Unary: lấy user theo id
+  rpc GetUser (GetUserRequest) returns (CreateUserResponse);
+
+  // server streaming: Tra ve danh sach tung cai mot
+  rpc ListUsers (UserListRequest) returns (stream CreateUserResponse);
+}
